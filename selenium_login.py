@@ -27,26 +27,24 @@ class ExerciseTwo():
 
     def testBadPassword(self,driver):
         driver = self.restart_to_main(driver)
-        user_name_text_field,password_text_field = self.getFormElements(driver)
-        user_name_text_field.send_keys("bob")
-        password_text_field.send_keys("foobz")
-        user_name_text_field.submit()
+        self.login_with_creds(driver, "bob", "wrong")
         return self.who_logged_in(driver) == "guest"
+
+    def login_with_creds(self,driver,username,password):
+        user_name_text_field, password_text_field = self.getFormElements(driver)
+        user_name_text_field.send_keys(username)
+        password_text_field.send_keys(password)
+        user_name_text_field.submit()
+
 
     def testGoodCreds(self,driver):
         driver = self.restart_to_main(driver)
-        user_name_text_field,password_text_field = self.getFormElements(driver)
-        user_name_text_field.send_keys("bob")
-        password_text_field.send_keys("foobaz")
-        user_name_text_field.submit()
+        self.login_with_creds(driver,"bob","foobaz")
         return self.who_logged_in(driver) != "guest"
 
     def testIncorrectPasswordShows(self,driver):
         driver = self.restart_to_main(driver)
-        user_name_text_field,password_text_field = self.getFormElements(driver)
-        user_name_text_field.send_keys("bob")
-        password_text_field.send_keys("wrong")
-        user_name_text_field.submit()
+        self.login_with_creds(driver, "bob", "wrong")
         return self.is_incorrect_pwd_shown(driver)
 
     def who_logged_in(self,driver):
