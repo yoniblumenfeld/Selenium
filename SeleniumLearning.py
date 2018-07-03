@@ -23,19 +23,20 @@ class Yad2(unittest.TestCase):
         elements = driver.find_elements_by_class_name("gallery_block_body")
         for element in elements:
             self.working_on_product(driver,element)
-            time.sleep(10)
+            time.sleep(5)
 
     def is_product__i7(self,string):
         try:
-            return str(unicode(string)).find("i7") > -1
-        except:
+            print "is_product_i7_string: ",string
+            print "found ",unicode(string).find("i7")
+            return unicode(string).find("i7") > -1 or unicode(string).find("I7") > -1
+        except Exception as err:
             print "exception in is_product_i7"
+            print err
 
-    def print_elmt_text(self,elmt):
-        print elmt.text
+
     def add_if_i7_product(self,element,url):
-        print element.text
-        if self.is_product__i7(str(element.text).decode("utf-8")):
+        if self.is_product__i7(element.text):
             self.i7_products_urls.append(url)
             print "{line_mark}Product Added {url}{line_mark}".format(url=url,line_mark="*"*10+"\n")
     def working_on_product(self,driver,product_element):
@@ -53,8 +54,11 @@ class Yad2(unittest.TestCase):
                 driver.switch_to.window(handle)
                 try:
                     driver.switch_to_frame(driver.find_element_by_id("hotPic_iframe"))
-                    [self.print_elmt_text(elmt) for elmt in driver.find_elements_by_class_name("innerDetailsDataGrid")]
-                    [self.add_if_i7_product(details_element,driver.current_url) for details_element in driver.find_elements_by_class_name("innerDetailsDataGrid")]
+                    for index,element in enumerate(driver.find_elements_by_class_name("innerDetailsDataGrid")):
+                        if index%2 != 0:
+                            self.add_if_i7_product(element,driver.current_url)
+                            print element.text
+                    print self.i7_products_urls
                 except Exception as err:
                     print err
                     continue
@@ -77,6 +81,7 @@ class Yad2(unittest.TestCase):
         select.select_by_visible_text(u"מוצרי סלולר ודיגיטל")
         self.search_string(driver,u"מחשבים")
         self.iterate_all_computers(driver)
+
 
 
         time.sleep(60)
