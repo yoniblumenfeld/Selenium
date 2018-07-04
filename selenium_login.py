@@ -13,7 +13,6 @@ class ExerciseTwo():
         tests = [self.testBadPassword,self.testGoodCreds,self.testIncorrectPasswordShows]
         [self.test_status(test,driver) for test in tests]
 
-        time.sleep(60)
 
     def restart_to_main(self,driver):
         driver.get("http://tvroom.github.io/selenium-exercises/ex2/")

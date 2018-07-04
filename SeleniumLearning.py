@@ -27,11 +27,9 @@ class Yad2(unittest.TestCase):
 
     def is_product__i7(self,string):
         try:
-            print "is_product_i7_string: ",string
             print "found ",unicode(string).find("i7")
             return unicode(string).find("i7") > -1 or unicode(string).find("I7") > -1
         except Exception as err:
-            print "exception in is_product_i7"
             print err
 
 
@@ -39,6 +37,7 @@ class Yad2(unittest.TestCase):
         if self.is_product__i7(element.text):
             self.i7_products_urls.append(url)
             print "{line_mark}Product Added {url}{line_mark}".format(url=url,line_mark="*"*10+"\n")
+
     def working_on_product(self,driver,product_element):
         """
         function that runs on each product that is opened on main yad2->computers page
@@ -57,7 +56,6 @@ class Yad2(unittest.TestCase):
                     for index,element in enumerate(driver.find_elements_by_class_name("innerDetailsDataGrid")):
                         if index%2 != 0:
                             self.add_if_i7_product(element,driver.current_url)
-                            print element.text
                     print self.i7_products_urls
                 except Exception as err:
                     print err
