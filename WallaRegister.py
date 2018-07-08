@@ -55,7 +55,6 @@ class RegisterWalla:
         Select(driver.find_element_by_id('month')).select_by_value('01') #fill month october (10)
         Select(driver.find_element_by_id('year')).select_by_value('1996') #fill year 1998
 
-
     def fill_phone(self,driver):
         select_phone_prefix,phone_post_fix = Select(driver.find_element_by_id("altPhonePrefix")),driver.find_element_by_id("altPhonePostfix")
         select_phone_prefix.select_by_value("0")  # prefix 050
@@ -72,6 +71,7 @@ class RegisterWalla:
     def click_gatcha(self,driver):
         gatpcha_element = driver.find_element_by_class_name("recaptcha-checkbox-checkmark")
         gatpcha_element.click()
+
     def test_main(self):
         driver = self.driver
         driver.get("https://friends.walla.co.il/#/register")
@@ -82,12 +82,6 @@ class RegisterWalla:
         self.fill_random_gender(driver)
         self.click_gatcha(driver)
         time.sleep(60)
-
-
-
-
-
-
 
 if __name__=="__main__":
     RegisterWalla().test_main()
