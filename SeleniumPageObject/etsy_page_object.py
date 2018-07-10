@@ -1,7 +1,7 @@
 import time
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 import re
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
@@ -24,6 +24,9 @@ class MainPage(BasePage):
         search_bar_element.clear()
         search_bar_element.send_keys(value)
         search_bar_element.submit()
+
+    def search_user(self,user_name):
+        self.search_value(user_name)
 
 
 class SearchResultsPage(BasePage):
