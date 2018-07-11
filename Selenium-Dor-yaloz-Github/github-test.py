@@ -24,7 +24,9 @@ class DorGitTest(unittest.TestCase):
         search_result_page = page.SearchResultsPage(self.driver)
         search_result_page.filter_results_by_user_name()
         search_result_page.navigate_to_user_page(USER_NAME)
-
+        user_page = page.UserProfilePage(self.driver)
+        user_page.get_all_repositories_elements()
+        user_page.commit_search()
     def tearDown(self):
         print "ended, sleeping for 10 seconds"
         time.sleep(60)

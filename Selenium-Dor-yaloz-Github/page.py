@@ -7,11 +7,9 @@ from selenium.webdriver.support import expected_conditions as EC
 class BasePage(object):
     def __init__(self,driver):
         self.driver = driver
-
-class MainPage(BasePage):
     def get_search_bar(self):
         return WebDriverWait(driver=self.driver,timeout=10).until(
-            EC.element_to_be_clickable((By.NAME,"q"))
+            EC.visibility_of_element_located((By.NAME,"q"))
         )
 
     def commit_search(self,value,search_bar_element=None):
@@ -20,6 +18,9 @@ class MainPage(BasePage):
         search_bar_element.clear()
         search_bar_element.send_keys(value)
         search_bar_element.submit()
+
+class MainPage(BasePage):
+    pass
 
 class SearchResultsPage(BasePage):
     def click_filter_button_by_visible_text(self,visible_text):
@@ -39,3 +40,15 @@ class SearchResultsPage(BasePage):
             if element.text == user_name:
                 element.click()
                 break
+
+class UserProfilePage(BasePage):
+    def get_all_repositories_elements(self):
+        repo_elements_list = WebDriverWait(driver=self.driver,timeout=10).until(
+            EC.presence_of_all_elements_located((By.XPATH,"//span[@title and @class='repo js-repo']/parent::a"))
+        )
+        return repo_elements_list
+        #for repository in repo_elements_list:
+        #    print repository.get_attribute("href")
+        #    print repository.text
+
+    
