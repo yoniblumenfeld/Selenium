@@ -7,10 +7,12 @@ from selenium.webdriver.support import expected_conditions as EC
 class BasePage(object):
     def __init__(self,driver):
         self.driver = driver
+
     def get_search_bar(self):
         return WebDriverWait(driver=self.driver,timeout=10).until(
             EC.visibility_of_element_located((By.NAME,"q"))
         )
+
 
     def commit_search(self,value,search_bar_element=None):
         if search_bar_element == None:
@@ -18,6 +20,7 @@ class BasePage(object):
         search_bar_element.clear()
         search_bar_element.send_keys(value)
         search_bar_element.submit()
+
 
 class MainPage(BasePage):
     pass
@@ -41,13 +44,31 @@ class SearchResultsPage(BasePage):
                 element.click()
                 break
 
+    def get_index_of_repository_in_results(self,repository_href):
+        repositories_elements = WebDriverWait(driver=self.driver,timeout=10).until(
+            EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class,'repo-list-item')]/descendant::a"))
+        )
+        for repo in repositories_elements:
+            print "comparing this repository: {0} to this: {1}".format(repo.get_attribute("href"),repository_href)
+            #print repository_element
+        for index,repo in enumerate(repositories_elements):
+            if repository_href == repo.get_attribute("href"):
+                return index
+        return -1
+
+
 class UserProfilePage(BasePage):
     def get_all_repositories_elements(self):
         repo_elements_list = WebDriverWait(driver=self.driver,timeout=10).until(
             EC.presence_of_all_elements_located((By.XPATH,"//span[@title and @class='repo js-repo']/parent::a"))
         )
-        return repo_elements_list
+        #return repo_elements_list
+        return [(repo.text,repo.get_attribute("href")) for repo in repo_elements_list]
+
+
+
         #for repository in repo_elements_list:
+
         #    print repository.get_attribute("href")
         #    print repository.text
 
