@@ -1,0 +1,4 @@
+YDKJS books checker
+1. gets word to search
+2. searches the word in the entire book\series
+3. returns the times the word is presented
