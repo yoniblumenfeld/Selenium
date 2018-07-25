@@ -11,8 +11,20 @@ class WordSearch(unittest.TestCase):
         self.driver = webdriver.Chrome("chromedriver.exe")
         self.driver.get("https://github.com/getify/You-Dont-Know-JS")
 
+    def iterate_whole_series(self,main_page,book_page,content_page,word="then"):
+        main_page_url = self.driver.current_url
+        books_href_list = [main_page.get_specific_book_link_element(book_name)\
+                           for book_name in main_page.books_names_to_index_dict.keys()]
+        print books_href_list
+        books_href_list = [book.get_attribute("href") for book in books_href_list]
+        series_counter = 0
+        for book_href in books_href_list:
+            self.driver.get(book_href)
+            series_counter += self.iterate_whole_book(word,book_page,content_page)
+            self.driver.get(main_page_url)
+        return series_counter
 
-    def search_whole_book(self,word,book_page,content_page):
+    def iterate_whole_book(self,word,book_page,content_page):
         all_chapters_and_appendix = [element.get_attribute("href") for element in
                                      book_page.get_chapters_or_appendix_link_elements()]
         counter = 0
@@ -24,11 +36,17 @@ class WordSearch(unittest.TestCase):
 
     def test_main(self):
         main_page = page.MainPage(self.driver)
-        main_page.get_specific_book_link_element("async & performance").click()
         book_page = page.BookPage(self.driver)
         content_page = page.ContentPage(self.driver)
-        print "The chosen word appears {appearence_count} times in the whole book!".format(appearence_count=self.search_whole_book("then",book_page,content_page))
+        print "The following word: {word} appears {appearence_count} times in the whole series!".format(
+            word="then",
+            appearence_count=self.iterate_whole_series(main_page,
+                                                       book_page,
+                                                       content_page,
+                                                       "then")
+        )
 
+        #print "The chosen word appears {appearence_count} times in the whole book!".format(appearence_count=self.iterate_whole_book("then",book_page,content_page))
 
     def tearDown(self):
         time.sleep(5)
