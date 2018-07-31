@@ -13,10 +13,8 @@ class WordSearch(unittest.TestCase):
 
     def iterate_whole_series(self,main_page,book_page,content_page,word="then"):
         main_page_url = self.driver.current_url
-        books_href_list = [main_page.get_specific_book_link_element(book_name)\
+        books_href_list = [main_page.get_specific_book_link_element(book_name).get_attribute("href")\
                            for book_name in main_page.books_names_to_index_dict.keys()]
-        print books_href_list
-        books_href_list = [book.get_attribute("href") for book in books_href_list]
         series_counter = 0
         for book_href in books_href_list:
             self.driver.get(book_href)

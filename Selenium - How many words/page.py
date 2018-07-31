@@ -18,7 +18,8 @@ class MainPage(BasePage):
     def get_specific_book_link_element(self,book_name):
         return WebDriverWait(self.driver,10).until(
             EC.presence_of_element_located((By.XPATH,
-                                            '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[6]/table/tbody/tr[{book_name}]/td[@class="content"]/span/a'.format(book_name=self.books_names_to_index_dict[book_name])))
+                                            '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[6]/table/tbody/tr[{book_name}]/td[@class="content"]/span/a'\
+                                            .format(book_name=self.books_names_to_index_dict[book_name])))
         )
 
 
